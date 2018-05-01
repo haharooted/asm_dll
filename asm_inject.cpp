@@ -1,13 +1,8 @@
 #include <iostream>
 #include <Windows.h>
 #include <TlHelp32.h>
- 
-// Change "MY_DLL_NAME.dll" to your dll name
-#define DLL_NAME "Cobalt.dll"
- 
-// And you need:
-// 1. change all bytes(0x00, 0x01, 0x03....) in define "JUNKS" to random bytes
-// 2. change size this block by add new bytes
+#define DLL_NAMED "League.dll"
+
 #define JUNKS \
 __asm _emit 0x34 \
 __asm _emit 0x23 \
@@ -22,14 +17,13 @@ __asm _emit 0x74 \
 __asm _emit 0x42 \
 __asm _emit 0x47 \
  
+ /*
+ Kind of important that you don't touch this
+ */
+ #define _JUNK_BLOCK(s) __asm jmp s JUNKS __asm s:
  
-// Don't change this!
-#define _JUNK_BLOCK(s) __asm jmp s JUNKS __asm s:
  
- 
-/////////////////////////////////////////////////////////////////////////////////////
-//                                 INJECTOR CODE                                   //
-/////////////////////////////////////////////////////////////////////////////////////
+//Code itself
  
 DWORD Process(char* ProcessName)
 {
@@ -74,7 +68,7 @@ int main()
     char myDLL[MAX_PATH];
    
     _JUNK_BLOCK(jmp_label13)
-    GetFullPathName(DLL_NAME, MAX_PATH, myDLL, 0);
+    GetFullPathName(DLL_NAMED, MAX_PATH, myDLL, 0);
    
     _JUNK_BLOCK(jmp_label4)
     dwProcess = Process("csgo.exe");
