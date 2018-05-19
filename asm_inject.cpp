@@ -18,7 +18,7 @@ __asm _emit 0x42 \
 __asm _emit 0x47 \
  
  /*
- Kind of important that you don't touch this
+Don't touch
  */
  #define _JUNK_BLOCK(s) __asm jmp s JUNKS __asm s:
  
